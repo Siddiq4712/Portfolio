@@ -19,9 +19,9 @@ const LeetCodeIcon = ({ size = 18 }) => (
   </svg>
 );
 
-const API_BASE = import.meta.env.PROD 
-  ? 'https://your-backend-url.vercel.app/api/v1'   // replace after deployment
-  : 'http://localhost:5000/api/v1';
+const VITE_API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000';
+
+const API_BASE = `${VITE_API_BASE}/api/v1`;
 
 const endpoints = [
   { id: 'identity', method: 'GET', path: '/identity', icon: <User size={18}/>, description: 'Candidate identity & contact' },
