@@ -6,18 +6,21 @@ import {
   FileDown, Github, Linkedin, ExternalLink
 } from 'lucide-react';
 
+// import {BxlLeetcode} from 'react-icons/boxicons-logos';
+import { TbBrandLeetcode } from 'react-icons/tb';
+
 // Custom LeetCode Icon Component
-const LeetCodeIcon = ({ size = 18 }) => (
-  <svg 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="currentColor" 
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path d="M13.483 0a1.374 1.374 0 0 0-.961.414l-4.323 4.32a1.09 1.09 0 0 0 0 1.556 1.09 1.09 0 0 0 1.556 0l4.323-4.32A1.09 1.09 0 0 0 13.483 0zm-5.278 5.688a1.1 1.1 0 0 0-1.556 0l-4.323 4.322a1.09 1.09 0 0 0 0 1.555c.134.134.315.209.511.209h7.545a1.1 1.1 0 0 0 0-2.2H5.817l4.323-4.322a1.1 1.1 0 0 0 0-1.555c-.134-.134-.315-.209-.511-.209h-.024zM22.178 11.648a1.1 1.1 0 0 0-1.556 0l-4.323 4.322a1.101 1.101 0 0 0 1.556 1.555l4.323-4.322a1.1 1.1 0 0 0 0-1.555zM13.483 18.272a1.1 1.1 0 0 0-1.556 0l-4.323 4.322a1.101 1.101 0 0 0 1.556 1.555l4.323-4.322a1.1 1.1 0 0 0 0-1.555z"/>
-  </svg>
-);
+// const LeetCodeIcon = ({ size = 18 }) => (
+//   <svg 
+//     width={size} 
+//     height={size} 
+//     viewBox="0 0 24 24" 
+//     fill="currentColor" 
+//     xmlns="http://www.w3.org/2000/svg"
+//   >
+//     <path d="M13.483 0a1.374 1.374 0 0 0-.961.414l-4.323 4.32a1.09 1.09 0 0 0 0 1.556 1.09 1.09 0 0 0 1.556 0l4.323-4.32A1.09 1.09 0 0 0 13.483 0zm-5.278 5.688a1.1 1.1 0 0 0-1.556 0l-4.323 4.322a1.09 1.09 0 0 0 0 1.555c.134.134.315.209.511.209h7.545a1.1 1.1 0 0 0 0-2.2H5.817l4.323-4.322a1.1 1.1 0 0 0 0-1.555c-.134-.134-.315-.209-.511-.209h-.024zM22.178 11.648a1.1 1.1 0 0 0-1.556 0l-4.323 4.322a1.101 1.101 0 0 0 1.556 1.555l4.323-4.322a1.1 1.1 0 0 0 0-1.555zM13.483 18.272a1.1 1.1 0 0 0-1.556 0l-4.323 4.322a1.101 1.101 0 0 0 1.556 1.555l4.323-4.322a1.1 1.1 0 0 0 0-1.555z"/>
+//   </svg>
+// );
 
 const VITE_API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000';
 
@@ -108,7 +111,9 @@ function App() {
                 <Linkedin size={16} className="md:w-[18px] md:h-[18px]" />
               </a>
               <a href="https://leetcode.com/u/Siddiq4712/" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-orange-400 transition-colors">
-                <LeetCodeIcon size={16} className="md:w-[18px] md:h-[18px]" />
+                {/* <LeetCodeIcon size={16} className="md:w-[18px] md:h-[18px]" /> */}
+                {/* <BxlLeetcode /> */}
+                <TbBrandLeetcode size={16} className='md:w-[18px] md:h-[18px]' />
               </a>
             </div>
 
