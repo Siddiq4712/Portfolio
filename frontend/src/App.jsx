@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Terminal, Code2, ShieldCheck, Zap, 
   ChevronRight, Database, Globe, Cpu,
@@ -41,6 +41,15 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [requestBody, setRequestBody] = useState(JSON.stringify(endpoints[0].body || {}, null, 2));
   const [copied, setCopied] = useState(false);
+  const textareaRef = useRef(null);
+
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + "px";
+    }
+  }, [requestBody])
 
   const handleCopy = () => {
     if (!response?.data) {
@@ -167,29 +176,13 @@ function App() {
 
       <main className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        {/* UPDATED SIDEBAR HEADER */}
+        {/* SIDEBAR HEADER */}
         <div className="lg:col-span-4 space-y-6">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-white mb-2 tracking-tight uppercase">Mohamed Abubacker Siddiq H</h1>
             <p className="text-slate-500 leading-relaxed mb-6">
               Full Stack Developer & Competitive Programmer. Proving backend expertise through an API-first architecture.
             </p>
-
-            {/* {/* NEW SOCIALS GRID */}
-            {/* <div className="grid grid-cols-3 gap-3">
-              <a href="https://github.com/Siddiq4712" target="_blank" className="flex flex-col items-center gap-2 p-3 bg-white/5 border border-white/5 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all group">
-                <Github size={20} className="text-slate-400 group-hover:text-white" />
-                <span className="text-[10px] font-bold uppercase tracking-tighter text-slate-500">GitHub</span>
-              </a>
-              <a href="https://www.linkedin.com/in/mohamed-abubacker-siddiq-h-ab378428a2" target="_blank" className="flex flex-col items-center gap-2 p-3 bg-white/5 border border-white/5 rounded-xl hover:bg-blue-600/10 hover:border-blue-500/30 transition-all group">
-                <Linkedin size={20} className="text-slate-400 group-hover:text-blue-400" />
-                <span className="text-[10px] font-bold uppercase tracking-tighter text-slate-500">LinkedIn</span>
-              </a>
-              <a href="https://leetcode.com/u/Siddiq4712/" target="_blank" className="flex flex-col items-center gap-2 p-3 bg-white/5 border border-white/5 rounded-xl hover:bg-orange-600/10 hover:border-orange-500/30 transition-all group">
-                <LeetCodeIcon size={20} className="text-slate-400 group-hover:text-orange-400" />
-                <span className="text-[10px] font-bold uppercase tracking-tighter text-slate-500">LeetCode</span>
-              </a>
-            </div> */}
           </div>
 
           {/* Existing endpoints mapping */}
@@ -246,9 +239,10 @@ function App() {
               
               {activeEp.method === 'POST' && (
                 <textarea
+                ref={textareaRef}
                   value={requestBody}
                   onChange={(e) => setRequestBody(e.target.value)}
-                  className="w-full h-32 bg-black/40 border border-white/10 rounded-xl p-4 font-mono text-sm focus:border-blue-500/50 outline-none transition-colors"
+                  className="w-full resize-none overflow-hidden h-32 bg-black/40 border border-white/10 rounded-xl p-4 font-mono text-sm focus:border-blue-500/50 outline-none transition-colors"
                 />
               )}
             </div>
