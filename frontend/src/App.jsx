@@ -3,24 +3,10 @@ import {
   Terminal, Code2, ShieldCheck, Zap, 
   ChevronRight, Database, Globe, Cpu,
   Send, Activity, User, BookOpen, Award,
-  FileDown, Github, Linkedin, ExternalLink
+  FileDown, Github, Linkedin
 } from 'lucide-react';
 
-// import {BxlLeetcode} from 'react-icons/boxicons-logos';
 import { TbBrandLeetcode } from 'react-icons/tb';
-
-// Custom LeetCode Icon Component
-// const LeetCodeIcon = ({ size = 18 }) => (
-//   <svg 
-//     width={size} 
-//     height={size} 
-//     viewBox="0 0 24 24" 
-//     fill="currentColor" 
-//     xmlns="http://www.w3.org/2000/svg"
-//   >
-//     <path d="M13.483 0a1.374 1.374 0 0 0-.961.414l-4.323 4.32a1.09 1.09 0 0 0 0 1.556 1.09 1.09 0 0 0 1.556 0l4.323-4.32A1.09 1.09 0 0 0 13.483 0zm-5.278 5.688a1.1 1.1 0 0 0-1.556 0l-4.323 4.322a1.09 1.09 0 0 0 0 1.555c.134.134.315.209.511.209h7.545a1.1 1.1 0 0 0 0-2.2H5.817l4.323-4.322a1.1 1.1 0 0 0 0-1.555c-.134-.134-.315-.209-.511-.209h-.024zM22.178 11.648a1.1 1.1 0 0 0-1.556 0l-4.323 4.322a1.101 1.101 0 0 0 1.556 1.555l4.323-4.322a1.1 1.1 0 0 0 0-1.555zM13.483 18.272a1.1 1.1 0 0 0-1.556 0l-4.323 4.322a1.101 1.101 0 0 0 1.556 1.555l4.323-4.322a1.1 1.1 0 0 0 0-1.555z"/>
-//   </svg>
-// );
 
 const VITE_API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000';
 
@@ -54,6 +40,17 @@ function App() {
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
   const [requestBody, setRequestBody] = useState(JSON.stringify(endpoints[0].body || {}, null, 2));
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    if (!response?.data) {
+      return;
+    }
+
+    navigator.clipboard.writeText(JSON.stringify(response.data, null, 2));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
 
   const executeRequest = async () => {
     setLoading(true);
@@ -75,6 +72,35 @@ function App() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const highlightJson = (data) => {
+    if (!data) return "";
+    
+    // Convert object to pretty-printed string
+    const jsonString = JSON.stringify(data, null, 2);
+
+    // Regex logic to find keys, strings, numbers, and booleans
+    return jsonString
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') // Escape HTML
+      .replace(
+        /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g,
+        (match) => {
+          let cls = 'text-orange-300'; // Default: Numbers
+          if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+              cls = 'text-blue-400 font-medium'; // Keys
+            } else {
+              cls = 'text-emerald-400'; // Strings
+            }
+          } else if (/true|false/.test(match)) {
+            cls = 'text-purple-400 font-bold'; // Booleans
+          } else if (/null/.test(match)) {
+            cls = 'text-red-400 font-bold'; // Null
+          }
+          return `<span class="${cls}">${match}</span>`;
+        }
+      );
   };
 
   return (
@@ -236,20 +262,31 @@ function App() {
                 <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Response Body</span>
               </div>
               {response && (
-                <div className="flex gap-4 text-[10px] font-bold uppercase tracking-tighter">
+                <div className='flex items-center gap-4'>
+                  {/* Copy Button */}
+                  <button onClick={handleCopy} className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all">
+                    {copied ? (
+                      <span className="text-emerald-400 flex items-center gap-1">Copied!</span>
+                    ) : (
+                      <span className="flex items-center gap-1">Copy JSON</span>
+                    )}
+                  </button>
+
+                  <div className="flex gap-4 text-[10px] font-bold uppercase tracking-tighter">
                   <span className="text-emerald-400 underline decoration-emerald-500/30 underline-offset-4">
                     STATUS: {response.status}
                   </span>
                   <span className="text-blue-400">TIME: {response.duration}ms</span>
+                </div>
                 </div>
               )}
             </div>
             
             <div className="p-6 flex-grow font-mono text-sm overflow-auto max-h-[500px] custom-scrollbar">
               {response ? (
-                <pre className="text-blue-100/80 leading-relaxed whitespace-pre-wrap">
-                  {JSON.stringify(response.data, null, 2)}
-                </pre>
+                <pre className="text-blue-100/80 leading-relaxed whitespace-pre-wrap"
+                 dangerouslySetInnerHTML={{ __html : highlightJson(response.data) }}
+                />
               ) : (
                 <div className="h-full flex flex-col items-center justify-center text-slate-600 space-y-4 opacity-50">
                   <Globe size={48} strokeWidth={1} />
