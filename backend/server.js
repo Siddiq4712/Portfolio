@@ -15,6 +15,7 @@ import achievementsRouter from './routes/achievements.js';
 import problemSolvingRouter from './routes/problemSolving.js';
 import hireRouter from './routes/hire.js';
 import statsRouter from './routes/stats.js';
+import connectDB from './config/db.js';
 
 const app = express();
 
@@ -98,6 +99,8 @@ app.use('*', (req, res) => {
 
 // Global error handler
 app.use(errorHandler);
+
+connectDB();
 
 const PORT = config.port || 5000;
 

@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "nodemon server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "seed" : "node seed.js"
   },
   "keywords": [
     "portfolio",
@@ -23,6 +24,7 @@
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^8.2.1",
     "helmet": "^7.2.0",
+    "mongoose": "^9.2.4",
     "nodemailer": "^7.0.12"
   },
   "devDependencies": {
