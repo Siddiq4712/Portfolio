@@ -6,10 +6,9 @@ import Profile from '../models/Profile.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-
 export const getIdentity = async (req, res) => {
   try {
-    const profile = await Profile.findOne().select('-id -__v'); // Exclude Unique ID and version fields
+    const profile = await Profile.findOne();
     if (!profile) {
       return res.status(404).json({
         status : 'error',
