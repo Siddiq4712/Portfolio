@@ -2,42 +2,42 @@ import Skills from '../models/Skill.js';
 
 export const getSkills = async (req, res) => {
   try {
-    const groupedSkillsByCategory = await Skills.aggregate([
+    const groupedSkills = await Skills.aggregate([
       {
-        $group : {
-          _id : '$category',
-          skills : {$push : "$name"},
-          count : {$sum : 1}
+        $group: {
+          _id: '$category',           // Group by the category field
+          skills: { $push: "$name" }, // Create an array of names
+          count: { $sum: 1 }          // Count items in this category
         }
-      }
-    ])
-    if (!groupedSkillsByCategory || !groupedSkillsByCategory.length === 0) {
+      },
+      {
+        $project: {
+          _id: 0,                     // Hide the default _id
+          category: "$_id",           // Rename _id to category
+          skills: 1,                  // Keep the skills array
+          count: 1                    // Keep the count
+        }
+      },
+    ]);
+
+    if (!groupedSkills || groupedSkills.length === 0) {
       return res.status(404).json({
-        status : 'error',
-        message : "Skills not found"
-      })
+        status: 'error',
+        message: "No skills found in the database"
+      });
     }
 
+    const orderedData = groupedSkills.map(item => ({
+      category : item.category,
+      skills : item.skills,
+      count : item.count
+    }))
 
-    res.status(200).json({
-      status : 'success',
-      data : groupedSkillsByCategory,
-    })
+    return res.status(200).json({
+      status: 'success',
+      data: orderedData,
+    });
   } catch (error) {
-    res.status(500).json({status : 'error', message : error.message});
+    res.status(500).json({ status: 'error', message: error.message });
   }
-}
-
-
-
-// export const getSkills = (req, res) => {
-//   res.status(200).json({
-//     status: 'success',
-//     data: {
-//       languages: ['Java', 'C++', 'JavaScript (ES6+)', 'SQL', 'C'],
-//       stack: ['MongoDB', 'Express.js', 'React.js', 'Node.js'],
-//       tools: ['Git', 'GitHub', 'Postman', 'REST APIs', 'Linux'],
-//       coreCS: ['DSA', 'DBMS', 'Operating Systems']
-//     }
-//   });
-// };
+};
