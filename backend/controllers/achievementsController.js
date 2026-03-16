@@ -1,26 +1,50 @@
-export const getAchievements = (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    data: {
-      hackathons: [
-        {
-          event: 'NITS Hacks 8.0',
-          institution: 'NIT Silchar',
-          role: 'National Level Participant'
-        }
-      ],
-      certifications: [
-        'MongoDB Basics (MongoDB University)',
-        'Responsive Web Design (FreeCodeCamp)',
-        'Python Basics (Digilabs)',
-        'Linux Unhatched (Cisco Academy)'
-      ],
-      experience: {
-        role: 'Web Development Intern',
-        company: 'Prodigy Infotech',
-        duration: 'May 2025 — June 2025',
-        impact: 'Reduced re-renders by 15% and integrated 10+ RESTful API endpoints.'
+import Achievement from '../models/Achievement.js';
+
+export const getAchievements = async (req, res) => {
+  try {
+
+    const achievements = await Achievement.find();
+
+    const result = {
+      hackathons: [],
+      certifications: [],
+      experience: null
+    };
+
+    achievements.forEach(item => {
+
+      if (item.type === 'Hackathon') {
+        result.hackathons.push({
+          event: item.title,
+          institution: item.organization,
+          role: item.role
+        });
       }
-    }
-  });
+
+      if (item.type === 'Certification') {
+        result.certifications.push(item.title);
+      }
+
+      if (item.type === 'Internship') {
+        result.experience = {
+          role: item.title,
+          company: item.organization,
+          duration: item.date,
+          impact: item.description
+        };
+      }
+
+    });
+
+    res.status(200).json({
+      status: "success",
+      data: result
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: error.message
+    });
+  }
 };

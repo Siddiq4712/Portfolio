@@ -103,7 +103,11 @@ const seedData = async () => {
     console.log('🏆 Seeding Achievements...');
     await Achievement.insertMany([
       { type: 'Internship', title: 'Web Development Intern', organization: 'Prodigy Infotech', role: 'Intern', description: 'Reduced re-renders by 15%' },
-      { type: 'Hackathon', title: 'NITS Hacks 8.0', organization: 'NIT Silchar', role: 'National Participant' }
+      { type: 'Hackathon', title: 'NITS Hacks 8.0', organization: 'NIT Silchar', role: 'National Participant' },
+      { type: "Certification", title: "MongoDB Basics (MongoDB University)" },
+      { type: "Certification", title: "Responsive Web Design (FreeCodeCamp)" },
+      { type: "Certification", title: "Python Basics (Digilabs)" },
+      { type: "Certification", title: "Linux Unhatched (Cisco Academy)" }
     ]);
 
     // 7. SEED PROBLEM SOLVING
