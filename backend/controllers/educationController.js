@@ -1,27 +1,21 @@
-export const getEducation = (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    data: {
-      university: {
-        institution: 'National Engineering College',
-        degree: 'BE Computer Science and Engineering',
-        duration: '2023 — 2027',
-        cgpa: '8.48',
-        location: 'Kovilpatti, TN'
-      },
-      schooling: [
-        {
-          institution: 'St. John’s Hr. Sec. School',
-          level: 'HSC',
-          percentage: '90.16%',
-          year: '2022 — 2023'
-        },
-        {
-          institution: 'Meera Matriculation School',
-          level: 'SSLC',
-          year: '2021'
-        }
-      ]
+import Education from '../models/Education.js';
+
+export const getEducation = async (req, res) => {
+  try {
+    const educationData = await Education.find().select('-_id -__v');
+
+    if (!educationData || educationData.length === 0) {
+      return res.status(404).json({
+        status: 'error',
+        message: 'No education data found'
+      }); 
     }
-  });
-};
+
+    res.status(200).json({
+      status : 'success',
+      data : educationData
+    })
+  } catch (error) {
+    res.status(500).json({message : 'error fetching education data', error: error.message});
+  }
+}

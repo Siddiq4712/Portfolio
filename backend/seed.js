@@ -95,7 +95,8 @@ const seedData = async () => {
     console.log('🎓 Seeding Education...');
     await Education.insertMany([
       { institution: 'National Engineering College', degree: 'BE Computer Science', duration: '2023 — 2027', cgpa: '8.4', level: 'University' },
-      { institution: 'St. John’s Hr. Sec. School', level: 'HSC', percentage: '90.17%', duration: '2022 — 2023' }
+      { institution: 'St. John’s Hr. Sec. School', level: 'HSC', percentage: '90.17%', duration: '2022 — 2023' },
+      { institution : "Meera matriculation school", level : "SSLC", percentage : "PASS", duration : "2020 - 2021", location : "Arampanni Thoothukudi"},
     ]);
 
     // 6. SEED ACHIEVEMENTS
@@ -108,7 +109,7 @@ const seedData = async () => {
     // 7. SEED PROBLEM SOLVING
     console.log('🧩 Seeding Stats...');
     await ProblemSolving.insertMany([
-      { platform: 'Skillrack', solvedCount: 200 },
+      { platform: 'Skillrack', solvedCount: 2000 },
       { platform: 'LeetCode', solvedCount: 500, rating: '1548' },
       { platform: 'GeeksforGeeks', solvedCount: 200 }
     ]);

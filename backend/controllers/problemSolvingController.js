@@ -1,19 +1,24 @@
-export const getProblemSolvingStats = (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    data: {
-      totalSolved: 2600,
-      breakdown: [
-        { platform: 'Skillrack', solved: '2000+' },
-        { platform: 'LeetCode', solved: '450+', rating: '1548' },
-        { platform: 'GeeksforGeeks', solved: '150+' }
-      ],
-      coreStrengths: [
-        'Data Structures & Algorithms',
-        'Competitive Programming',
-        'Database Management Systems',
-        'Operating Systems'
-      ]
+import ProblemSolving from "../models/ProblemSolving.js";
+
+export const getProblemSolvingStats = async (req, res) => {
+  try {
+    const stats = await ProblemSolving.find().select('-_id -__v');
+
+    if (!stats || stats.elngth === 0) {
+      return res.status(404).json({
+        status : 'error',
+        message : "No data Found",
+      });
     }
-  });
-};
+
+    res.status(200).json({
+      status : 'success',
+      data : stats,
+    })
+  } catch(error) {
+    res.status(500).json({
+      status : 'error',
+      message : error.message,
+    })
+  }
+}
